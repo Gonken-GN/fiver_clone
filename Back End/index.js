@@ -11,6 +11,8 @@ import * as dotenv from 'dotenv';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
+
 import userRouter from './src/routes/user.routes.js';
 import authRouter from './src/routes/auth.routes.js';
 
@@ -19,6 +21,7 @@ dotenv.config();
 const init = () => {
   // setting up the server
   const server = express();
+  server.use(cookieParser());
   server.use(cors({ credentials: true }));
   server.use(bodyParser.json({ limit: '10mb', extended: true }));
   server.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));

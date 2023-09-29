@@ -11,7 +11,18 @@ import User from "../models/user.models.js";
 
 export const deleteUser = async (
   /* @type import('express').Request */ req,
-  /** @type import('express').Response */ res
+  /** @type import('express').Response */ res,
+  next,
 ) => {
-
+  const { id } = req.params;
+  try {
+    await User.findByIdAndDelete( id );
+    const response = res.status(200).json({
+      status: 'success',
+      message: 'User deleted successfully',
+    });
+    return response;
+  } catch (error) {
+    next();
+  }
 };

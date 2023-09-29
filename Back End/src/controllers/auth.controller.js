@@ -7,16 +7,21 @@
  * */
 
 // import mongoose from 'mongoose';
+
 import bcrpyt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import * as dotenv from 'dotenv';
+
 import User from '../models/user.models.js';
 
+dotenv.config();
 export const login = async (
   /* @type import('express').Request */ req,
   /** @type import('express').Response */ res,
 ) => {
   const { username, password } = req.body;
   try {
-    const user = User.findOne({ username });
+    const user = await User.findOne({ username });
     if (!user) {
       const response = res.status(404).json({
         status: 'fail',
@@ -32,6 +37,13 @@ export const login = async (
       });
       return response;
     }
+    const token = jwt.sign(
+      { id: user.id, isSeller: user.isSeller },
+      process.env.JWT_KEY,
+    );
+    res.cookie('access_token', token, {
+      httpOnly: true,
+    });
     const response = res.status(200).json({
       status: 'success',
       data: user,
