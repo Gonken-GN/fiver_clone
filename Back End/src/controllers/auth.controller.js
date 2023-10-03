@@ -86,4 +86,14 @@ export const signup = async (
 export const logout = async (
   /* @type import('express').Request */ req,
   /** @type import('express').Response */ res,
-) => {};
+) => {
+  res.clearCookie('access_token', {
+    sameSite: 'none',
+    secure: true,
+  });
+  const response = res.status(200).json({
+    status: 'success',
+    message: 'user logged out',
+  });
+  return response;
+};
