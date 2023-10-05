@@ -23,7 +23,7 @@ export const login = async (
   try {
     const user = await User.findOne({ username });
     if (!user) {
-      const response = res.status(404).json({
+      const response = res.status(400).json({
         status: 'fail',
         message: 'Wrong username or user not found',
       });
@@ -31,7 +31,7 @@ export const login = async (
     }
     const isCorrect = bcrpyt.compareSync(password, user.password);
     if (!isCorrect) {
-      const response = res.status(404).json({
+      const response = res.status(400).json({
         status: 'fail',
         message: 'Wrong password',
       });
@@ -50,7 +50,7 @@ export const login = async (
     });
     return response;
   } catch (error) {
-    const response = res.status(400).json({
+    const response = res.status(404).json({
       status: 'fail',
       message: error.message,
     });

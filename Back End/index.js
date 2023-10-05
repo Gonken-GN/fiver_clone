@@ -22,7 +22,7 @@ const init = () => {
   // setting up the server
   const server = express();
   server.use(cookieParser());
-  server.use(cors({ credentials: true }));
+  server.use(cors({ credentials: true, origin: 'http://localhost:5173' }));
   server.use(bodyParser.json({ limit: '10mb', extended: true }));
   server.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
 
