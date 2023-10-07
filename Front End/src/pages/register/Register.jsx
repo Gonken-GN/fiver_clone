@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import "./Register.scss";
 import newRequest from "../../utils/newRequest";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
+import axios from "axios";
+import upload from "../../utils/upload";
 
 function Register() {
   const [file, setFile] = useState(null);
@@ -14,7 +16,7 @@ function Register() {
     isSeller: false,
     desc: "",
   });
-
+  const navigate = useNavigate();
   console.log(user);
   const handleChange = (e) => {
     setUser((prev) => {
@@ -27,9 +29,23 @@ function Register() {
       return { ...prev, isSeller: e.target.checked };
     });
   };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const url = await upload(file);
+    try {
+      await newRequest.post('/auth/register', {
+        ...user,
+        img: url
+      });
+      // navigate("/");
+    } catch (error) {
+      console.log(error)
+    }
+  }
   return (
     <div className="register">
-      <form onSubmit={""}>
+      <form onSubmit={handleSubmit}>
         <div className="left">
           <h1>Create a new account</h1>
           <label htmlFor="">Username</label>
@@ -49,7 +65,7 @@ function Register() {
           <label htmlFor="">Password</label>
           <input name="password" type="password" onChange={handleChange} />
           <label htmlFor="">Profile Picture</label>
-          <input type="file" onChange={e => setFile(e.target.files[0])} />
+          <input type="file" onChange={(e) => setFile(e.target.files[0])} />
           <label htmlFor="">Country</label>
           <input
             name="country"
@@ -82,7 +98,7 @@ function Register() {
             id=""
             cols="30"
             rows="10"
-            onChange={"handleChange"}
+            onChange={handleChange}
           ></textarea>
         </div>
       </form>
