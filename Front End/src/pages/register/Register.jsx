@@ -34,7 +34,7 @@ function Register() {
     e.preventDefault();
     const url = await upload(file);
     try {
-      await newRequest.post('/auth/register', {
+      await newRequest.post('/auth/signup', {
         ...user,
         img: url
       });

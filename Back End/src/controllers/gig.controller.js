@@ -7,11 +7,36 @@
  * */
 
 // import mongoose from 'mongoose';
-import User from "../models/user.models.js";
-
-export const deleteUser = async (
+import Gig from "../models/gig.model.js";
+export const createGig = async (
   /* @type import('express').Request */ req,
-  /** @type import('express').Response */ res
+  /** @type import('express').Response */ res,
+  next
 ) => {
-
+  try {
+    if (!req.isSeller) {
+      const response = res.status(403).json({
+        status: 'fail',
+        message: 'Only Sellers can create a gig',
+      });
+      return response;
+    }
+    const newGig = new Gig({
+      userId: req.userId,
+      ...req.body,
+    });
+    
+  } catch (error) {
+    next();
+  }
 };
+export const createGig = async (
+  /* @type import('express').Request */ req,
+  /** @type import('express').Response */ res,
+  next
+) => {};
+export const createGig = async (
+  /* @type import('express').Request */ req,
+  /** @type import('express').Response */ res,
+  next,
+) => {};
