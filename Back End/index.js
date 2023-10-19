@@ -15,6 +15,7 @@ import cookieParser from 'cookie-parser';
 
 import userRouter from './src/routes/user.routes.js';
 import authRouter from './src/routes/auth.routes.js';
+import gigRouter from './src/routes/gig.routes.js';
 
 // get env from .env file
 dotenv.config();
@@ -29,6 +30,7 @@ const init = () => {
   // register the routes
   server.use('/users', userRouter);
   server.use('/auth', authRouter);
+  server.use('/gig', gigRouter);
   // get port from .env
   const PORT = process.env.PORT || 5000;
   // start the server
